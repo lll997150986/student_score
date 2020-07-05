@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.student_score.dao.StudentDao">
+
+    <insert id="insertStudent" parameterType="com.student_score.domain.Student">
+        insert  into student values (#{stuNum},#{stuName},#{stuSex},#{stuClass},#{stuTel},#{stuDes},#{stuEmail},#{stuPasswd});
+    </insert>
+
+    <delete id="delStudent" parameterType="com.student_score.domain.Student">
+        delete from student where stu_num=#{stuNum};
+    </delete>
+
+    <select id="findStudentByName" parameterType="string" resultType="com.student_score.domain.Student">
+      select * from student where stu_name=#{name};
+    </select>
+
+    <select id="findStudentByNum" parameterType="string" resultType="com.student_score.domain.Student">
+        select * from student
+        <where>
+            stu_num=#{num};
+        </where>
+    </select>
+
+    <update id="updateStudent" parameterType="com.student_score.domain.Student">
+        update student set stu_name=#{stuName}, stu_sex=#{stuSex},stu_class=#{stuClass},stu_tel=#{stuTel},
+        stu_des=#{stuDes},stu_email=#{stuEmail},stu_passwd=#{stuPasswd}
+        <where>stu_num=#{stuNum}; </where>
+    </update>
+
+    <update id="updateExperiment" parameterType="com.student_score.domain.Experiment">
+        update experiment set exp_des=#{expDes},exp_score=#{expScore} where stu_num=#{stuNum} and class_num=#{classNum}
+        and exp_num=#{expNum};
+    </update>
+
+    <update id="updateHomework">
+        update homework set homework_des=#{homeworkDes}, homework_score=#{homeworkScore} where homework_num=#{homeworkNum}
+        and stu_num=#{stuNum} and class_num=#{classNum};
+    </update>
+
+    <update id="updateClassinfo" parameterType="com.student_score.domain.Classinfo">
+         update classinfo set class_location=#{classLocation},class_des=#{classDes},class_students=#{classStudents},born_date=#{bornDate},
+         is_valid=#{isValid} where class_num=#{classNum};
+    </update>
+
+    <update id="setHasNewHomework">
+        update classinfo set has_new_homework=#{hasNewHomework} where class_num=#{classNum};
+    </update>
+
+    <update id="setHasNewExp">
+        update classinfo set has_new_exp=#{hasNewExp} where class_num=#{classNum};
+    </update>
+    <update id="updateStuClass">
+        update stu_class set stu_rank=#{stuRank},stu_score=#{stuScore},stu_class_des=#{stuClassDes};
+    </update>
+
+    <delete id="delAllStudent">
+        delete  from student;
+    </delete>
+    <select id="findStuNums" parameterType="string" resultType="int">
+        select count(stu_num) from stu_class where class_num=#{classNum};
+    </select>
+
+    <select id="findAllStudent" resultType="com.student_score.domain.Student">
+        select * from student;
+    </select>
+
+   <select id="findAllStudentDesByScore" parameterType="com.student_score.domain.Classinfo" resultType="com.student_score.domain.Student">
+       select s.stu_num,s.stu_name,s.stu_sex,s.stu_class,s.stu_tel,s.stu_des,s.stu_email,s.stu_passwd from student s inner join stu_class sc
+          on s.stu_num=sc.stu_num and sc.class_num=#{classNum}
+       order by sc.stu_score DESC;
+   </select>
+
+    <select id="findAllSignByStudent" resultType="com.student_score.domain.Sign">
+        select * from sign
+        <where>
+            stu_num=#{stuNum} and class_num=#{classNum};
+        </where>
+    </select>
+
+    <select id="findAllSignByClass" resultType="com.student_score.domain.Sign">
+        select * from sign where sign_num=#{signNum} and class_num=#{classNum};
+
+    </select>
+
+    <insert id="insertSign" parameterType="com.student_score.domain.Sign">
+        insert into sign (sign_num,stu_num,class_num,sign_des) values (#{signNum},#{stuNum},#{classNum},#{signDes});
+    </insert>
+
+    <delete id="delSignByStudent" parameterType="com.student_score.domain.Sign">
+        delete from sign where stu_num=#{stuNum};
+    </delete>
+
+    <delete id="delAllSignByClass" parameterType="com.student_score.domain.Classinfo">
+        delete  from sign where class_num=#{classNum};
+    </delete>
+
+    <select id="findAllHomeWorkByStudent" parameterType="com.student_score.domain.Student"
+            resultType="com.student_score.domain.Homework">
+        select  * from homework where stu_num=#{stuNum};
+    </select>
+
+    <select id="findAllHomeworkByClass"   resultType="com.student_score.domain.Homework">
+        select * from homework where homework_num=#{homeworkNum} and class_num=#{classNum};
+    </select>
+
+    <insert id="insertHomework" parameterType="com.student_score.domain.Homework">
+        insert into homework(homework_num,stu_num,class_num,homework_des,homework_score)
+        values (#{homeworkNum},#{stuNum},#{classNum},#{homeworkDes},#{homeworkScore});
+    </insert>
+
+
+    <delete id="delAllHomeworkByStudent" parameterType="com.student_score.domain.Student">
+        delete  from homework where stu_num=#{stuNum}
+    </delete>
+
+    <delete id="delAllHomeworkByClass" parameterType="com.student_score.domain.Classinfo">
+        delete  from homework where class_num=#{classNum}
+    </delete>
+
+    <select id="findAllExperimentByStudent" parameterType="com.student_score.domain.Student" resultType="com.student_score.domain.Experiment">
+        select * from experiment where stu_num=#{stuNum}
+    </select>
+
+    <select id="findAllExperimentByClass"  resultType="com.student_score.domain.Experiment">
+        select * from experiment where exp_num=#{expNum} and class_num=#{classNum}
+    </select>
+
+    <insert id="insertExperiment" parameterType="com.student_score.domain.Experiment">
+         insert into experiment (exp_num,stu_num,class_num,exp_des,exp_score) values (#{expNum},#{stuNum},#{classNum},#{expDes},#{expScore});
+    </insert>
+
+    <delete id="delAllExpermientByStudent" parameterType="com.student_score.domain.Student">
+        delete  from experiment where stu_num=#{stuNum}
+    </delete>
+
+    <delete id="delAllExperimentByClass" parameterType="com.student_score.domain.Classinfo">
+        delete  from experiment where class_num=#{classNum}
+    </delete>
+
+    <select id="findAllClassinfoByStudent" parameterType="com.student_score.domain.Student" resultType="com.student_score.domain.Classinfo">
+        select  c.* from classinfo c,stu_class sc where c.class_num=sc.class_num and sc.stu_num=#{stuNum};
+    </select>
+
+    <resultMap id="scoreAndRank" type="com.student_score.domain.StuClass">
+    <result column="stu_core" property="stuScore"></result>
+    <result column="stu_rank" property="stuRank"></result>
+    </resultMap>
+
+    <select id="findStuClassByStuAndClass" resultType="com.student_score.domain.StuClass">
+        select * from stu_class where stu_num=#{stuNum} and class_num=#{classNum};
+    </select>
+
+    <select id="findAllStuClassByClass" resultType="com.student_score.domain.StuClass" parameterType="string">
+       select * from stu_class where  class_num=#{classNum} order by stu_score desc;
+    </select>
+
+    <select id="findClassInfoByClass" parameterType="string" resultType="com.student_score.domain.Classinfo">
+        select * from classinfo where class_num=#{classNum};
+    </select>
+    <select id="findMaxSignTimes" resultType="java.lang.Integer">
+        SELECT MAX(sign_num)  FROM sign WHERE class_num=#{classNum} ;
+    </select>
+    <select id="findMaxHomeworkTimes" resultType="java.lang.Integer">
+         SELECT IFNULL(MAX(homework_num),0)  FROM homework WHERE class_num=#{classNum} ;
+    </select>
+    <select id="findMaxExpTimes" resultType="java.lang.Integer">
+         SELECT IFNULL(MAX(exp_num),0)  FROM experiment WHERE class_num=#{classNum} ;
+    </select>
+
+    <select id="findHasNewHomework" resultType="java.lang.String">
+        select has_new_homework from classinfo where class_num=#{classNum};
+    </select>
+
+    <select id="findHasNewExp" resultType="java.lang.String">
+        select has_new_exp form classinfo where class_num=#{classNum};
+    </select>
+
+    <select id="findTotalSignTimes" resultType="java.lang.Integer">
+        select count(sign_num)  from sign where  stu_num=#{stuNum} and class_num=#{classNum};
+    </select>
+
+    <select id="findAllStuClassByClassOrderByScore" resultType="com.student_score.domain.StuClass">
+        select * from stu_class order by stu_score desc ;
+    </select>
+
+    <select id="findTotalHomeworkScore" resultType="string">
+        select sum(homework_score) from homework where stu_num=#{stuNum} and class_num=#{classNum};
+    </select>
+
+    <select id="findTotalExpScore" resultType="string">
+         select sum(exp_score) from experiment where stu_num=#{stuNum} and class_num=#{classNum};
+    </select>
+
+    <select id="findAllSigns" resultType="com.student_score.domain.Sign">
+        select * from sign where class_num=#{classNum} ;
+    </select>
+
+    <select id="findAllExperiments" resultType="com.student_score.domain.Experiment">
+        select * from experiment where class_num=#{classNum};
+    </select>
+
+    <select id="findAllHomeworks" resultType="com.student_score.domain.Homework">
+        select * from homework where class_num=#{classNum};
+    </select>
+
+    <select id="findClassinfoSigntimes" resultType="java.lang.String">
+        select sign_times from classinfo where class_num=#{classNum};
+    </select>
+
+    <insert id="insertClassinfo" parameterType="com.student_score.domain.Classinfo">
+        insert into classinfo (class_num,class_location,class_des,class_students,born_date,is_valid)
+        values (#{classNum},#{classLocation},#{classDes},
+        #{classStudents},#{bornDate},#{isValid});
+    </insert>
+
+    <delete id="delClassinfo">
+        delete  from tea_class where tea_num=#{teaNum}  and class_num=#{classNum} ;
+    </delete>
+
+    <delete id="delClassByStudent" parameterType="com.student_score.domain.StuClass">
+        delete  from stu_class where stu_num=#{stuNum};
+    </delete>
+
+    <delete id="delStuClass">
+        delete  from stu_class where stu_num=#{stuNum} and class_num=#{classNum};
+    </delete>
+
+    <insert id="insertStuClass" parameterType="com.student_score.domain.StuClass">
+        insert into stu_class(stu_num,class_num) values(#{stuNum},#{classNum});
+    </insert>
+
+    <insert id="insertTeaClass">
+        insert into tea_class(tea_num,class_num) values (#{teaNum},#{classNum});
+    </insert>
+
+
+</mapper>

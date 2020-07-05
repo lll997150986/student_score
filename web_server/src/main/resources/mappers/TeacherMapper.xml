@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.student_score.dao.TeacherDao">
+
+    <insert id="insertTeacher" parameterType="com.student_score.domain.Teacher">
+        insert into teacher values (#{teaNum},#{teaName},#{teaSex},#{teaTel},#{teaEmail},#{teaDes},#{teaPasswd});
+    </insert>
+
+    <delete id="delTeacher" parameterType="com.student_score.domain.Teacher">
+        delete  from teacher where tea_num=#{teaNum};
+    </delete>
+
+    <update id="updateTeacher" parameterType="com.student_score.domain.Teacher">
+        update teacher set tea_name=#{teaName},tea_sex=#{teaSex},tea_tel=#{teaTel},tea_email=#{teaEmail},tea_des=#{teaDes},tea_passwd=#{teaPasswd}
+        where tea_num=#{teaNum};
+    </update>
+
+    <update id="updateIsValid">
+        update classinfo set  is_valid=#{isValid},sign_times=#{signTime} where class_num=#{classNum} ;
+    </update>
+
+    <update id="updateStuClass">
+        update stu_class set stu_score=#{stuScore}, stu_class_des=#{stuClassDes}, stu_rank=#{stuRank}  where stu_num=#{stuNum} and class_num=#{classNum};
+    </update>
+
+    <select id="findTeacherByNum"  parameterType="string" resultType="com.student_score.domain.Teacher">
+        select * from teacher where tea_num=#{teaNum};
+    </select>
+
+    <select id="findAllClassByTeacher" parameterType="com.student_score.domain.Teacher" resultType="com.student_score.domain.Classinfo">
+        select c.* from classinfo c, tea_class t where c.class_num=t.class_num  and t.tea_num=#{teaNum};
+    </select>
+
+    <select id="findAllTeacher" resultType="com.student_score.domain.Teacher">
+        select * from teacher;
+    </select>
+
+    <resultMap id="stuclass2" type="com.student_score.domain.result.StuClass">
+        <id column="stu_num" property="stuNum"></id>
+        <result column="class_num" property="classNum"></result>
+        <result column="stu_rank" property="stuRank"></result>
+        <result column="stu_score" property="stuScore"></result>
+        <result column="stu_class_des" property="stuClassDes"></result>
+        <result column="stu_name" property="stuName"></result>
+        <result column="stu_class" property="stuClass"></result>
+        <result column="stu_tel" property="stuTel"></result>
+    </resultMap>
+
+    <select id="findAllStuClassByClassNum" parameterType="string" resultMap="stuclass2">
+         select sc.*, s.stu_name,s.stu_class,s.stu_tel  from stu_class sc INNER join student s on sc.stu_num=s.stu_num where sc.class_num=#{classNum};
+    </select>
+
+    <select id="findStudents" resultType="java.lang.Integer">
+        select count(*) from stu_class where class_num=#{classNum};
+    </select>
+
+    <delete id="delTeaClass" parameterType="com.student_score.domain.TeaClass">
+        delete  from tea_class where tea_num=#{teaNum} and class_num=#{classNum}
+    </delete>
+
+</mapper>
+

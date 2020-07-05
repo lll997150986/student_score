@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.student_score.dao.AdminDao">
+
+    <insert id="insertAdmin" parameterType="com.student_score.domain.Admin">
+        insert into admin(username,passwd) values (#{username},#{passwd})
+    </insert>
+
+    <delete id="delAdmin" parameterType="com.student_score.domain.Admin">
+        delete  from admin
+        <where>
+            username=#{username}
+        </where>
+    </delete>
+
+    <select id="queryAdminByName" parameterType="string" resultType="com.student_score.domain.Admin">
+        select  * from admin where username=#{username};
+    </select>
+
+</mapper>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorGray5"
+    android:orientation="vertical" >
+    <include layout="@layout/title" />
+    <Spinner
+        android:id="@+id/spinner_times"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:visibility="gone"
+        android:layout_marginTop="5dip"/>
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:stretchColumns="1" >
+         <ListView
+            android:id="@+id/h_list_view"
+            android:divider="#00000000"
+            android:dividerHeight="5dp"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+    </TableLayout>
+    <Button
+        android:id="@+id/btn_addTimes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorblue1"
+        android:visibility="gone"
+        android:text="发布作业"/>
+
+    <Button
+        android:id="@+id/btn_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/holo_blue"
+        android:visibility="gone"
+        android:text="保存"/>
+
+</LinearLayout>
